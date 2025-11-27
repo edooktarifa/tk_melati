@@ -1,0 +1,42 @@
+@import "tailwindcss";
+@config "../tailwind.config.js";
+
+html {
+  scroll-behavior: smooth;
+}
+
+@theme {
+  --color-primary: #FF9F1C;
+  --color-secondary: #2EC4B6;
+  --color-accent: #FFBF69;
+  --color-background: #CBF3F0;
+  --color-text: #2B2D42;
+
+  --font-sans: "Nunito", sans-serif;
+
+  --radius-xl: 1rem;
+  --radius-2xl: 1.5rem;
+  --radius-3xl: 2rem;
+}
+
+@layer base {
+  :root {
+    --color-primary: #FF9F1C;
+    --color-secondary: #2EC4B6;
+    --color-accent: #FFBF69;
+    --color-background: #CBF3F0;
+    --color-text: #2B2D42;
+  }
+
+  .dark {
+    --color-primary: #FF9F1C;
+    --color-secondary: #2EC4B6;
+    --color-accent: #FFBF69;
+    --color-background: #0f172a;
+    --color-text: #f8fafc;
+  }
+
+  h6 {
+    @apply font-bold;
+  }
+}
