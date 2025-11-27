@@ -89,12 +89,22 @@ const Profile = () => {
                             </p>
 
                             <div className="flex -space-x-4">
-                                {[1, 2, 3, 4].map((i) => (
+                                {[
+                                    { name: "Ida Jubaedah", image: "/bu_ida.jpeg" },
+                                    { name: "Neneng Sudarsih", image: "/bu_neneng.jpeg" },
+                                    { name: "Maryati", image: "/bu_mar.jpeg" },
+                                    { name: "Dian Nurhayati Anwar", image: "/ms_dian.jpeg" },
+                                    { name: "Afrian Wibisono", image: "/pak_wibi.jpeg" }
+                                ].map((teacher, i) => (
                                     <div
                                         key={i}
-                                        className="w-12 h-12 rounded-full border-2 border-white dark:border-gray-800 bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-xs font-bold text-gray-500 dark:text-gray-300"
+                                        className="w-12 h-12 rounded-full border-2 border-orange-300 dark:border-gray-800 bg-gray-200 dark:bg-gray-700 overflow-hidden"
                                     >
-                                        Guru {i}
+                                        <img
+                                            src={teacher.image}
+                                            alt={teacher.name}
+                                            className="w-full h-full object-cover"
+                                        />
                                     </div>
                                 ))}
                             </div>
