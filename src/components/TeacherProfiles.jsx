@@ -67,7 +67,7 @@ const TeacherProfiles = () => {
 
                 <div className="relative max-w-4xl mx-auto">
                     <div className="flex justify-center items-center">
-                        <button onClick={prevSlide} className="absolute left-0 z-10 p-2 bg-white dark:bg-gray-800 rounded-full shadow-lg hover:bg-gray-100 dark:hover:bg-gray-700 hidden md:block text-gray-600 dark:text-gray-300">
+                        <button onClick={prevSlide} className="absolute left-0 z-10 p-2 bg-white dark:bg-gray-800 rounded-full shadow-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-300">
                             <ChevronLeft size={32} />
                         </button>
 
@@ -98,7 +98,7 @@ const TeacherProfiles = () => {
                             </AnimatePresence>
                         </div>
 
-                        <button onClick={nextSlide} className="absolute right-0 z-10 p-2 bg-white dark:bg-gray-800 rounded-full shadow-lg hover:bg-gray-100 dark:hover:bg-gray-700 hidden md:block text-gray-600 dark:text-gray-300">
+                        <button onClick={nextSlide} className="absolute right-0 z-10 p-2 bg-white dark:bg-gray-800 rounded-full shadow-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-300">
                             <ChevronRight size={32} />
                         </button>
                     </div>

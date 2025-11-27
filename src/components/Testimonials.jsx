@@ -123,7 +123,7 @@ const Testimonials = () => {
 
                 <div className="relative">
                     {/* Carousel Content */}
-                    <div className="overflow-hidden min-h-[300px] px-4 md:px-20">
+                    <div className="overflow-hidden min-h-[300px] px-4 md:px-20 cursor-grab active:cursor-grabbing">
                         <AnimatePresence mode='wait'>
                             <motion.div
                                 key={currentIndex}
@@ -131,6 +131,18 @@ const Testimonials = () => {
                                 animate={{ opacity: 1, x: 0 }}
                                 exit={{ opacity: 0, x: -50 }}
                                 transition={{ duration: 0.3 }}
+                                drag="x"
+                                dragConstraints={{ left: 0, right: 0 }}
+                                dragElastic={0.2}
+                                onDragEnd={(e, { offset, velocity }) => {
+                                    const swipe = offset.x;
+
+                                    if (swipe < -50) {
+                                        nextSlide();
+                                    } else if (swipe > 50) {
+                                        prevSlide();
+                                    }
+                                }}
                                 className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
                             >
                                 {visibleTestimonials.map((testimonial) => (
@@ -139,20 +151,6 @@ const Testimonials = () => {
                             </motion.div>
                         </AnimatePresence>
                     </div>
-
-                    {/* Navigation Buttons (Desktop) */}
-                    <button
-                        onClick={prevSlide}
-                        className="absolute top-1/2 left-2 md:left-4 transform -translate-y-1/2 bg-white p-3 rounded-full shadow-md text-primary hover:bg-primary hover:text-white transition-colors z-10 hidden md:block"
-                    >
-                        <ChevronLeft size={24} />
-                    </button>
-                    <button
-                        onClick={nextSlide}
-                        className="absolute top-1/2 right-2 md:right-4 transform -translate-y-1/2 bg-white p-3 rounded-full shadow-md text-primary hover:bg-primary hover:text-white transition-colors z-10 hidden md:block"
-                    >
-                        <ChevronRight size={24} />
-                    </button>
                 </div>
 
                 {/* Pagination Dots */}
