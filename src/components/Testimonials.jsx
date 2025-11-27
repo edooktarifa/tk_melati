@@ -7,7 +7,7 @@ const testimonials = [
         id: 1,
         name: "Mama Khanza",
         text: "Saya sangat puas dengan pendidikan dan pelayanan di TK Melati, Guru-guru yang ramah,baik dan sangat sabar dalam mendidik anak, serta fasilitas yang lengkap ruangan kelas ada AC dan bersih dan membuat anak saya sangat nyaman dan senang belajar di sini. Kurikulum yang disusun dengan baik dan beragam kegiatan ekstrakurikuler membuat anak saya semakin berkembang dan memiliki minat yang luas. Saya juga sangat mengapresiasi komunikasi yang baik antara guru dan orang tua, sehingga saya selalu mendapatkan informasi tentang perkembangan anak saya. Saya sangat merekomendasikan TK Melatih untuk orang tua yang ingin memberikan pendidikan terbaik untuk anak-anaknya",
-        child: "Murid TK B"
+        child: "Wali Murid TK B"
     },
     {
         id: 2,
@@ -17,27 +17,9 @@ const testimonials = [
     },
     {
         id: 3,
-        name: "Mrs. Lee",
-        text: "The best decision we made for our child's early education. Highly recommended!",
-        child: "Mom of Kevin (Age 6)"
-    },
-    {
-        id: 4,
-        name: "Ibu Siti",
-        text: "Anak saya jadi lebih mandiri dan berani bersosialisasi. Terima kasih TK Melati!",
-        child: "Ibu dari Rina (Usia 5)"
-    },
-    {
-        id: 5,
-        name: "Pak Budi",
-        text: "Fasilitasnya lengkap dan lingkungannya sangat asri. Anak-anak belajar dengan gembira.",
-        child: "Ayah dari Dito (Usia 4)"
-    },
-    {
-        id: 6,
-        name: "Ibu Ani",
-        text: "Program hafalannya sangat membantu. Alhamdulillah anak saya sudah hafal banyak surat pendek.",
-        child: "Ibu dari Aisyah (Usia 6)"
+        name: "Mama Fathan",
+        text: "TK Melati merupakan tempat yang sangat recommended untuk anak-anak belajar. Guru-gurunya sabar, kreatif dan informatif. Sehingga komunikasi antara sekolah dan orang tua terjalin dengan baik. Untuk fasilitasnya lengkap dan bersih. Saya sangat puas dengan pelayanan dan program belajarnya, karena disini tidak ada tebang pilih terhadap anak. Semua anak diperlakukan sama. Terima kasih TK Melati, karena telah jadi rumah kedua bagi anak-anak kami, dan terima kasih karena sudah menjadikan sekolah menjadi tempat belajar yang nyaman dan juga aman.",
+        child: "Wali Murid TK B"
     }
 ];
 
