@@ -159,7 +159,7 @@ const Testimonials = () => {
                         <button
                             key={index}
                             onClick={() => goToSlide(index)}
-                            className={`w-3 h-3 rounded-full transition-all duration-300 ${currentIndex === index ? 'bg-primary w-8' : 'bg-gray-300 hover:bg-primary/50'
+                            className={`w-3 h-3 rounded-full transition-all duration-300 ${currentIndex === index ? 'bg-primary w-8' : 'bg-secondary/30 hover:bg-secondary/50'
                                 }`}
                             aria-label={`Go to slide ${index + 1}`}
                         />

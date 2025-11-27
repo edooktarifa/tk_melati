@@ -118,7 +118,7 @@ const TeacherProfiles = () => {
                             <button
                                 key={index}
                                 onClick={() => setCurrentIndex(index)}
-                                className={`w-3 h-3 rounded-full transition-colors ${index === currentIndex ? 'bg-text dark:bg-white' : 'bg-gray-300 dark:bg-gray-600'
+                                className={`w-3 h-3 rounded-full transition-all duration-300 ${index === currentIndex ? 'bg-primary w-8' : 'bg-secondary/30 hover:bg-secondary/50'
                                     }`}
                             />
                         ))}
