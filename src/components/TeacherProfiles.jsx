@@ -8,35 +8,40 @@ const teachers = [
         name: "Ida Jubaedah ",
         role: "Wali Kelas TK B",
         bio: "Mengajar lebih Taman kanak Melati lebih dari 20 tahun.",
-        color: "bg-teal-300"
+        color: "bg-teal-300",
+        image: "/bu_ida.jpeg"
     },
     {
         id: 2,
         name: "Neneng Sudarsih",
         role: "Wali Kelas TK A",
         bio: "Mengajar di taman kanak Melati selama 2 tahun",
-        color: "bg-rose-300"
+        color: "bg-rose-300",
+        image: "/bu_neneng.jpeg"
     },
     {
         id: 3,
         name: "Maryati",
         role: "Wali Kelas KB",
         bio: "Mengajar di taman kanak melati kurang lebih 8 tahun",
-        color: "bg-indigo-300"
+        color: "bg-indigo-300",
+        image: "/bu_mar.jpeg"
     },
     {
         id: 4,
         name: "Dian Nurhayati Anwar",
         role: "Guru Bahasa Inggris",
         bio: "Mengajar di taman kanak melati lebih dari 15 tahun",
-        color: "bg-emerald-300"
+        color: "bg-emerald-300",
+        image: "/ms_dian.jpeg"
     },
     {
         id: 5,
         name: "Afrian Wibisono",
         role: "Guru Seni",
         bio: "Mengajar di taman kanak melati lebih dari 5 tahun.",
-        color: "bg-violet-300"
+        color: "bg-violet-300",
+        image: "/pak_wibi.jpeg"
     }
 ];
 
@@ -86,8 +91,12 @@ const TeacherProfiles = () => {
                                     transition={{ duration: 0.5 }}
                                     className="relative w-full h-full bg-white/30 dark:bg-slate-800/30 backdrop-blur-md border border-white/20 rounded-3xl p-8 flex flex-col md:flex-row items-center justify-center shadow-2xl"
                                 >
-                                    <div className={`w-32 h-32 md:w-48 md:h-48 ${teachers[currentIndex].color} rounded-full flex items-center justify-center mb-6 md:mb-0 md:mr-8 shrink-0 shadow-lg`}>
-                                        <span className="text-6xl">👩‍🏫</span>
+                                    <div className={`w-32 h-32 md:w-48 md:h-48 ${teachers[currentIndex].color} rounded-full flex items-center justify-center mb-6 md:mb-0 md:mr-8 shrink-0 shadow-lg overflow-hidden`}>
+                                        <img
+                                            src={teachers[currentIndex].image}
+                                            alt={teachers[currentIndex].name}
+                                            className="w-full h-full object-cover"
+                                        />
                                     </div>
                                     <div className="text-center md:text-left z-10">
                                         <h3 className="text-3xl font-bold mb-2 text-slate-800 dark:text-white">{teachers[currentIndex].name}</h3>
