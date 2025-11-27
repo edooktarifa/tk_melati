@@ -45,7 +45,7 @@ const VisionMission = () => {
                 >
                     <motion.h2
                         variants={titleVariants}
-                        className="text-4xl font-extrabold text-text dark:text-white mb-4"
+                        className="text-4xl font-extrabold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent mb-4"
                     >
                         Visi & Misi
                     </motion.h2>

@@ -117,7 +117,7 @@ const Testimonials = () => {
         <section id="testimonials" className="py-20 bg-white dark:bg-slate-900 overflow-hidden">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="text-center mb-16">
-                    <h2 className="text-4xl font-extrabold text-text dark:text-white mb-4">Review Orang Tua Murid</h2>
+                    <h2 className="text-4xl font-extrabold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent mb-4">Review Orang Tua Murid</h2>
                     <p className="text-xl text-gray-600 dark:text-gray-300">Apa kata mereka tentang TK Melati.</p>
                 </div>
 

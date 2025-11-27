@@ -61,7 +61,7 @@ const TeacherProfiles = () => {
                     transition={{ duration: 0.6, ease: "easeOut" }}
                     className="text-center mb-16"
                 >
-                    <h2 className="text-4xl font-extrabold text-text dark:text-white mb-4">Guru TK Melati</h2>
+                    <h2 className="text-4xl font-extrabold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent mb-4">Guru TK Melati</h2>
                     <p className="text-xl text-gray-600 dark:text-gray-300">Pendidik penuh dedikasi yang berkomitmen untuk tumbuh kembang anak Anda.</p>
                 </motion.div>
 
