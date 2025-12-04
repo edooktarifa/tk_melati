@@ -6,6 +6,7 @@ import { db } from '../firebase';
 
 const Profile = () => {
     const [teachers, setTeachers] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchTeachers = async () => {
@@ -20,6 +21,8 @@ const Profile = () => {
                 setTeachers(teachersData);
             } catch (error) {
                 console.error("Error fetching teachers: ", error);
+            } finally {
+                setLoading(false);
             }
         };
 
@@ -111,18 +114,30 @@ const Profile = () => {
                             </p>
 
                             <div className="flex -space-x-4">
-                                {teachers.map((teacher, i) => (
-                                    <div
-                                        key={i}
-                                        className="w-12 h-12 rounded-full border-2 border-orange-300 dark:border-gray-800 bg-gray-200 dark:bg-gray-700 overflow-hidden"
-                                    >
-                                        <img
-                                            src={teacher.image}
-                                            alt={teacher.name}
-                                            className="w-full h-full object-cover"
+                                {loading ? (
+                                    [...Array(5)].map((_, i) => (
+                                        <div
+                                            key={i}
+                                            className="w-12 h-12 rounded-full border-2 border-white dark:border-gray-800 bg-gray-200 dark:bg-gray-700 animate-pulse"
                                         />
-                                    </div>
-                                ))}
+                                    ))
+                                ) : (
+                                    teachers.map((teacher, i) => (
+                                        <motion.div
+                                            key={i}
+                                            initial={{ opacity: 0, x: -20 }}
+                                            animate={{ opacity: 1, x: 0 }}
+                                            transition={{ delay: i * 0.1 }}
+                                            className="w-12 h-12 rounded-full border-2 border-orange-300 dark:border-gray-800 bg-gray-200 dark:bg-gray-700 overflow-hidden"
+                                        >
+                                            <img
+                                                src={teacher.image}
+                                                alt={teacher.name}
+                                                className="w-full h-full object-cover"
+                                            />
+                                        </motion.div>
+                                    ))
+                                )}
                             </div>
                         </div>
                     </div>
