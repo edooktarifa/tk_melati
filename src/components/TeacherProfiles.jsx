@@ -1,52 +1,43 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-
-const teachers = [
-    {
-        id: 1,
-        name: "Ida Jubaedah ",
-        role: "Wali Kelas TK B",
-        bio: "Mengajar lebih Taman kanak Melati lebih dari 20 tahun.",
-        color: "bg-teal-300",
-        image: "/bu_ida.jpeg"
-    },
-    {
-        id: 2,
-        name: "Neneng Sudarsih",
-        role: "Wali Kelas TK A",
-        bio: "Mengajar di taman kanak Melati selama 2 tahun",
-        color: "bg-rose-300",
-        image: "/bu_neneng.jpeg"
-    },
-    {
-        id: 3,
-        name: "Maryati",
-        role: "Wali Kelas KB",
-        bio: "Mengajar di taman kanak melati kurang lebih 8 tahun",
-        color: "bg-indigo-300",
-        image: "/bu_mar.jpeg"
-    },
-    {
-        id: 4,
-        name: "Dian Nurhayati Anwar",
-        role: "Guru Bahasa Inggris",
-        bio: "Mengajar di taman kanak melati lebih dari 15 tahun",
-        color: "bg-emerald-300",
-        image: "/ms_dian.jpeg"
-    },
-    {
-        id: 5,
-        name: "Afrian Wibisono",
-        role: "Guru Seni",
-        bio: "Mengajar di taman kanak melati lebih dari 5 tahun.",
-        color: "bg-violet-300",
-        image: "/pak_wibi.jpeg"
-    }
-];
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '../firebase';
 
 const TeacherProfiles = () => {
+    const [teachers, setTeachers] = useState([]);
     const [currentIndex, setCurrentIndex] = useState(0);
+    const [loading, setLoading] = useState(true);
+
+    const colors = [
+        "bg-teal-300",
+        "bg-rose-300",
+        "bg-indigo-300",
+        "bg-emerald-300",
+        "bg-violet-300"
+    ];
+
+    useEffect(() => {
+        const fetchTeachers = async () => {
+            try {
+                const querySnapshot = await getDocs(collection(db, "teachers"));
+                const teachersData = querySnapshot.docs.map((doc, index) => ({
+                    id: doc.id,
+                    ...doc.data(),
+                    bio: doc.data().desc,
+                    image: doc.data().profileImg,
+                    color: colors[index % colors.length]
+                }));
+                setTeachers(teachersData);
+            } catch (error) {
+                console.error("Error fetching teachers: ", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchTeachers();
+    }, []);
 
     const nextSlide = () => {
         setCurrentIndex((prev) => (prev + 1) % teachers.length);
@@ -55,6 +46,18 @@ const TeacherProfiles = () => {
     const prevSlide = () => {
         setCurrentIndex((prev) => (prev - 1 + teachers.length) % teachers.length);
     };
+
+    if (loading) {
+        return (
+            <section id="teachers" className="py-20 bg-background dark:bg-slate-900 overflow-hidden flex justify-center items-center h-96">
+                <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-primary"></div>
+            </section>
+        );
+    }
+
+    if (teachers.length === 0) {
+        return null;
+    }
 
     return (
         <section id="teachers" className="py-20 bg-background dark:bg-slate-900 overflow-hidden">
