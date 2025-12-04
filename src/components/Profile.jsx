@@ -1,8 +1,30 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { CheckCircle } from 'lucide-react';
+import { collection, getDocs, query, orderBy } from 'firebase/firestore';
+import { db } from '../firebase';
 
 const Profile = () => {
+    const [teachers, setTeachers] = useState([]);
+
+    useEffect(() => {
+        const fetchTeachers = async () => {
+            try {
+                const q = query(collection(db, "teachers"), orderBy("createdAt", "desc"));
+                const querySnapshot = await getDocs(q);
+                const teachersData = querySnapshot.docs.map((doc) => ({
+                    id: doc.id,
+                    name: doc.data().name,
+                    image: doc.data().profileImg
+                }));
+                setTeachers(teachersData);
+            } catch (error) {
+                console.error("Error fetching teachers: ", error);
+            }
+        };
+
+        fetchTeachers();
+    }, []);
 
     const containerVariants = {
         hidden: { opacity: 0 },
@@ -89,13 +111,7 @@ const Profile = () => {
                             </p>
 
                             <div className="flex -space-x-4">
-                                {[
-                                    { name: "Ida Jubaedah", image: "/bu_ida.jpeg" },
-                                    { name: "Neneng Sudarsih", image: "/bu_neneng.jpeg" },
-                                    { name: "Maryati", image: "/bu_mar.jpeg" },
-                                    { name: "Dian Nurhayati Anwar", image: "/ms_dian.jpeg" },
-                                    { name: "Afrian Wibisono", image: "/pak_wibi.jpeg" }
-                                ].map((teacher, i) => (
+                                {teachers.map((teacher, i) => (
                                     <div
                                         key={i}
                                         className="w-12 h-12 rounded-full border-2 border-orange-300 dark:border-gray-800 bg-gray-200 dark:bg-gray-700 overflow-hidden"
