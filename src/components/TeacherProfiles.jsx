@@ -21,13 +21,16 @@ const TeacherProfiles = () => {
         const fetchTeachers = async () => {
             try {
                 const querySnapshot = await getDocs(collection(db, "teachers"));
-                const teachersData = querySnapshot.docs.map((doc, index) => ({
-                    id: doc.id,
-                    ...doc.data(),
-                    bio: doc.data().desc,
-                    image: doc.data().profileImg,
-                    color: colors[index % colors.length]
-                }));
+                const teachersData = querySnapshot.docs
+                    .map((doc, index) => ({
+                        id: doc.id,
+                        ...doc.data(),
+                        bio: doc.data().desc,
+                        image: doc.data().profileImg,
+                        color: colors[index % colors.length]
+                    }))
+                    .reverse();
+
                 setTeachers(teachersData);
             } catch (error) {
                 console.error("Error fetching teachers: ", error);
