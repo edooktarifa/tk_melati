@@ -1,7 +1,76 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { collection, getDocs, limit, query } from 'firebase/firestore';
+import { db } from '../firebase';
+import { Download } from 'lucide-react';
 
 const Hero = () => {
+    const [downloadUrls, setDownloadUrls] = useState({
+        browsure: '',
+        formulir: ''
+    });
+    const [loading, setLoading] = useState(true);
+
+    // Fetch download URLs from Firebase
+    useEffect(() => {
+        const fetchDownloadUrls = async () => {
+            try {
+                setLoading(true);
+                const formulirRef = collection(db, 'formulir');
+                const q = query(formulirRef, limit(1));
+                const querySnapshot = await getDocs(q);
+
+                if (!querySnapshot.empty) {
+                    const data = querySnapshot.docs[0].data();
+                    setDownloadUrls({
+                        browsure: data.browsure || '',
+                        formulir: data.formulir || ''
+                    });
+                }
+            } catch (err) {
+                console.error('Error fetching download URLs:', err);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchDownloadUrls();
+    }, []);
+
+    // Handle download
+    const handleDownload = (url, filename) => {
+        if (!url) {
+            alert('File belum tersedia');
+            return;
+        }
+
+        try {
+            // For Firebase Storage URLs, add response-content-disposition parameter
+            let downloadUrl = url;
+
+            // Check if it's a Firebase Storage URL
+            if (url.includes('firebasestorage.googleapis.com')) {
+                const separator = url.includes('?') ? '&' : '?';
+                downloadUrl = url + separator + 'response-content-disposition=attachment;filename=' + encodeURIComponent(filename);
+            }
+
+            // Create a temporary anchor element and trigger download
+            const link = document.createElement('a');
+            link.href = downloadUrl;
+            link.download = filename;
+            link.target = '_blank';
+            link.rel = 'noopener noreferrer';
+
+            // Trigger download
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        } catch (error) {
+            console.error('Error downloading file:', error);
+            alert('Terjadi kesalahan saat mendownload file');
+        }
+    };
+
     return (
         <section id="home" className="relative bg-gradient-to-b from-background to-white dark:from-slate-900 dark:to-slate-800 py-20 overflow-hidden">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center">
@@ -48,10 +117,20 @@ const Hero = () => {
                         }}
                         className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start"
                     >
-                        <button className="bg-primary text-white px-8 py-4 rounded-2xl font-bold text-lg shadow-lg hover:bg-orange-600 transition-transform hover:scale-105">
+                        <button
+                            onClick={() => handleDownload(downloadUrls.browsure, 'brosur-tk-melati.pdf')}
+                            disabled={loading || !downloadUrls.browsure}
+                            className="bg-primary text-white px-8 py-4 rounded-2xl font-bold text-lg shadow-lg hover:bg-orange-600 transition-transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                        >
+                            <Download size={20} />
                             Download Brosur
                         </button>
-                        <button className="bg-white text-primary border-2 border-primary px-8 py-4 rounded-2xl font-bold text-lg shadow-sm hover:bg-orange-50 transition-transform hover:scale-105">
+                        <button
+                            onClick={() => handleDownload(downloadUrls.formulir, 'formulir-tk-melati.pdf')}
+                            disabled={loading || !downloadUrls.formulir}
+                            className="bg-white text-primary border-2 border-primary px-8 py-4 rounded-2xl font-bold text-lg shadow-sm hover:bg-orange-50 transition-transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                        >
+                            <Download size={20} />
                             Download Formulir
                         </button>
                     </motion.div>
