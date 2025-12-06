@@ -65,10 +65,10 @@ const Navbar = () => {
                             <img src="tk_melati_logo.png" alt="" className="w-10 h-10" />
                         </div>
                         <div className="flex flex-col">
-                            <span className="text-xl font-bold text-orange-400 leading-none tracking-wide">
+                            <span className="text-xl font-bold text-primary leading-none tracking-wide">
                                 TK MELATI
                             </span>
-                            <span className="text-[10px] text-blue-400 tracking-wider uppercase font-semibold">
+                            <span className="text-[10px] text-secondary tracking-wider uppercase font-semibold">
                                 Cerdas & Berkarakter
                             </span>
                         </div>
@@ -93,15 +93,15 @@ const Navbar = () => {
                                     }
                                 }}
                                 className={`relative font-medium text-sm transition-colors duration-200 ${activeLink === link.name
-                                    ? 'text-orange-500 dark:text-orange-400'
-                                    : 'text-gray-700 dark:text-gray-200 hover:text-orange-500 dark:hover:text-orange-400'
+                                    ? 'text-primary dark:text-purple-400'
+                                    : 'text-gray-700 dark:text-gray-200 hover:text-primary dark:hover:text-purple-400'
                                     }`}
                             >
                                 {link.name}
                                 {activeLink === link.name && (
                                     <motion.div
                                         layoutId="activeTab"
-                                        className="absolute -bottom-1 left-0 right-0 h-0.5 bg-orange-500 rounded-full"
+                                        className="absolute -bottom-1 left-0 right-0 h-0.5 bg-primary rounded-full"
                                         initial={false}
                                         transition={{ type: "spring", stiffness: 500, damping: 30 }}
                                     />
@@ -112,7 +112,7 @@ const Navbar = () => {
                             href="https://wa.me/6285820009353?text=%22Selamat%20datang%20di%20TK%20Melati%2C%20ada%20yang%20bisa%20kami%20bantu%20hari%20ini%3F%22"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="bg-yellow-400 text-white px-6 py-2.5 rounded-full font-bold text-sm shadow-md hover:bg-yellow-500 hover:shadow-lg transition-all duration-200 transform hover:-translate-y-0.5"
+                            className="bg-accent text-white px-6 py-2.5 rounded-full font-bold text-sm shadow-md hover:bg-pink-500 hover:shadow-lg transition-all duration-200 transform hover:-translate-y-0.5"
                         >
                             Hubungi Kami
                         </a>

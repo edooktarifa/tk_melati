@@ -11,6 +11,8 @@ html {
   --color-accent: #FFBF69;
   --color-background: #CBF3F0;
   --color-text: #2B2D42;
+  --color-surface: #ffffff;
+  --color-surface-highlight: #f8fafc;
 
   --font-sans: "Nunito", sans-serif;
 
@@ -21,22 +23,55 @@ html {
 
 @layer base {
   :root {
-    --color-primary: #FF9F1C;
-    --color-secondary: #2EC4B6;
-    --color-accent: #FFBF69;
-    --color-background: #CBF3F0;
-    --color-text: #2B2D42;
+    --color-primary: #8a56f1;
+    /* Purple */
+    --color-secondary: #4fa5e0;
+    /* Blue */
+    --color-accent: #fb2cad;
+    /* Bright Pink */
+    --color-background: #f8f6ff;
+    /* Light Lavender tint */
+    --color-text: #334155;
+    --color-surface: #ffffff;
+    --color-surface-highlight: #f1f5f9;
+
+    /* Extra Brand Colors for gradients */
+    --color-brand-purple: #8a56f1;
+    --color-brand-pink: #d076c7;
+    --color-brand-blue: #4fa5e0;
+    --color-brand-hot-pink: #fb2cad;
+    --color-brand-dark-blue: #3377cb;
   }
 
   .dark {
-    --color-primary: #FF9F1C;
-    --color-secondary: #2EC4B6;
-    --color-accent: #FFBF69;
+    --color-primary: #a78bfa;
+    /* Lighter Purple for dark mode */
+    --color-secondary: #38bdf8;
+    /* Lighter Blue */
+    --color-accent: #f472b6;
+    /* Lighter Pink */
     --color-background: #0f172a;
-    --color-text: #f8fafc;
+    --color-text: #e2e8f0;
+    --color-surface: #1e293b;
+    --color-surface-highlight: #334155;
+
+    --color-brand-purple: #a78bfa;
+    --color-brand-pink: #e879f9;
+    --color-brand-blue: #60a5fa;
+    --color-brand-hot-pink: #fb7185;
+    --color-brand-dark-blue: #60a5fa;
   }
 
+  body {
+    @apply bg-background text-text transition-colors duration-300;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
   h6 {
-    @apply font-bold;
+    @apply font-bold tracking-tight;
   }
 }

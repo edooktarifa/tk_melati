@@ -1,49 +1,95 @@
 import React, { useState, useEffect } from 'react';
-import { Quote, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Quote, MessageCircleHeart } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { collection, getDocs, orderBy, query } from 'firebase/firestore';
 import { db } from '../firebase';
 
-const TestimonialCard = ({ testimonial }) => {
+// Testimonial Skeleton
+const TestimonialSkeleton = () => (
+    <div className="bg-white/60 dark:bg-slate-800/60 backdrop-blur-md p-8 rounded-[2rem] h-full flex flex-col border border-white/50 dark:border-white/10 shadow-lg overflow-hidden relative">
+        <div className="absolute inset-0 -translate-x-full animate-[shimmer_2s_infinite] bg-gradient-to-r from-transparent via-white/20 to-transparent dark:via-white/5 z-20"></div>
+        <div className="w-12 h-12 rounded-full bg-slate-200 dark:bg-slate-700 mb-6"></div>
+        <div className="flex-1 space-y-3">
+            <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded-lg w-full"></div>
+            <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded-lg w-full"></div>
+            <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded-lg w-3/4"></div>
+        </div>
+        <div className="flex items-center gap-4 mt-6 pt-6 border-t border-slate-100 dark:border-slate-700/50">
+            <div className="w-12 h-12 rounded-full bg-slate-200 dark:bg-slate-700"></div>
+            <div>
+                <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded-lg w-24 mb-2"></div>
+                <div className="h-3 bg-slate-200 dark:bg-slate-700 rounded-lg w-16"></div>
+            </div>
+        </div>
+    </div>
+);
+
+const TestimonialCard = ({ testimonial, index }) => {
     const [isExpanded, setIsExpanded] = useState(false);
     const isLongText = testimonial.text.length > 150;
 
     return (
-        <div className="bg-background dark:bg-slate-800 p-8 rounded-3xl relative shadow-lg border border-gray-100 dark:border-slate-700 h-full flex flex-col transition-all duration-300">
-            <Quote className="absolute top-6 left-6 text-primary opacity-20" size={48} />
-            <div className="relative z-10 flex-grow mb-3">
-                <p className={`text-gray-700 dark:text-gray-300 text-lg italic ${!isExpanded ? 'line-clamp-4' : ''}`}>
+        <motion.div
+            layout
+            initial={{ opacity: 0, y: 50 }}
+            animate={{
+                opacity: 1,
+                y: 0,
+                // Floating animation
+                translateY: [0, -10, 0],
+            }}
+            transition={{
+                duration: 0.8,
+                delay: index * 0.1,
+                translateY: {
+                    duration: 3 + Math.random() * 2,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                    delay: Math.random() * 2
+                }
+            }}
+            whileHover={{ scale: 1.02, translateY: -5, transition: { duration: 0.2 } }}
+            className="bg-white/60 dark:bg-slate-800/60 backdrop-blur-md p-8 rounded-[2rem] relative shadow-lg hover:shadow-2xl transition-all duration-300 border border-white/50 dark:border-white/10 flex flex-col h-full group"
+        >
+            <div className="absolute top-6 right-6 text-primary/20 group-hover:text-primary/40 transition-colors">
+                <Quote size={48} className="transform rotate-180" />
+            </div>
+
+            <div className="flex-grow mb-6 relative z-10">
+                <p className={`text-slate-600 dark:text-slate-300 text-lg leading-relaxed italic ${!isExpanded ? 'line-clamp-4' : ''}`}>
                     "{testimonial.text}"
                 </p>
                 {isLongText && (
                     <button
                         onClick={() => setIsExpanded(!isExpanded)}
-                        className="text-primary font-semibold text-sm mt-2 hover:underline focus:outline-none"
+                        className="text-primary hover:text-purple-600 dark:hover:text-purple-400 font-semibold text-sm mt-3 focus:outline-none transition-colors"
                     >
-                        {isExpanded ? 'Sembunyikan' : 'Selengkapnya'}
+                        {isExpanded ? 'Sembunyikan' : 'Baca Selengkapnya'}
                     </button>
                 )}
             </div>
-            <div>
-                <h4 className="font-bold text-text dark:text-white text-xl">{testimonial.name}</h4>
-                <p className="text-sm text-gray-500 dark:text-gray-400">{testimonial.child}</p>
+
+            <div className="flex items-center gap-4 pt-6 border-t border-slate-100 dark:border-slate-700/50">
+                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center text-white font-bold text-lg shadow-md shrink-0">
+                    {testimonial.name.charAt(0)}
+                </div>
+                <div>
+                    <h4 className="font-bold text-slate-800 dark:text-white text-lg">{testimonial.name}</h4>
+                    <p className="text-sm text-slate-500 dark:text-slate-400 font-medium">Orang tua dari {testimonial.child}</p>
+                </div>
             </div>
-        </div>
+        </motion.div>
     );
 };
 
 const Testimonials = () => {
-    const [currentIndex, setCurrentIndex] = useState(0);
-    const [itemsPerPage, setItemsPerPage] = useState(1);
     const [testimonials, setTestimonials] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+    const [visibleCount, setVisibleCount] = useState(6); // Show 6 initially for masonry feel
 
-    // Fetch testimonials from Firebase
     useEffect(() => {
         const fetchTestimonials = async () => {
             try {
-                setLoading(true);
                 const testimonialsRef = collection(db, 'testimonials');
                 const q = query(testimonialsRef, orderBy('createdAt', 'desc'));
                 const querySnapshot = await getDocs(q);
@@ -57,10 +103,8 @@ const Testimonials = () => {
                 }));
 
                 setTestimonials(testimonialsData);
-                setError(null);
             } catch (err) {
                 console.error('Error fetching testimonials:', err);
-                setError('Gagal memuat testimonials');
             } finally {
                 setLoading(false);
             }
@@ -69,117 +113,65 @@ const Testimonials = () => {
         fetchTestimonials();
     }, []);
 
-    useEffect(() => {
-        const handleResize = () => {
-            if (window.innerWidth >= 1024) {
-                setItemsPerPage(3);
-            } else if (window.innerWidth >= 768) {
-                setItemsPerPage(2);
-            } else {
-                setItemsPerPage(1);
-            }
-        };
-
-        handleResize();
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
-    }, []);
-
-    const totalPages = Math.ceil(testimonials.length / itemsPerPage);
-
-    const nextSlide = () => {
-        setCurrentIndex((prev) => (prev + 1) % totalPages);
+    const loadMore = () => {
+        setVisibleCount(prev => prev + 3);
     };
-
-    const prevSlide = () => {
-        setCurrentIndex((prev) => (prev - 1 + totalPages) % totalPages);
-    };
-
-    const goToSlide = (index) => {
-        setCurrentIndex(index);
-    };
-
-    // Calculate visible testimonials for current page
-    const visibleTestimonials = testimonials.slice(
-        currentIndex * itemsPerPage,
-        (currentIndex + 1) * itemsPerPage
-    );
-
-    // Handle edge case where last page might have fewer items
-    // If we are on the last page and it's not full, we might want to show some previous items to fill the grid
-    // But for simplicity, let's just show what's there.
 
     return (
-        <section id="testimonials" className="py-20 bg-white dark:bg-slate-900 overflow-hidden">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section id="testimonials" className="py-24 bg-slate-50 dark:bg-slate-900 overflow-hidden relative">
+            <div className="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/cube-coat.png')] opacity-[0.03] dark:opacity-[0.02]"></div>
+
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
                 <div className="text-center mb-16">
-                    <h2 className="text-4xl font-extrabold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent mb-4">Review Orang Tua Murid</h2>
-                    <p className="text-xl text-gray-600 dark:text-gray-300">Apa kata mereka tentang TK Melati.</p>
+                    <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-pink-100 dark:bg-pink-900/30 text-pink-600 dark:text-pink-300 text-sm font-semibold mb-6">
+                        <MessageCircleHeart size={16} />
+                        <span>Kata Mereka</span>
+                    </div>
+                    <h2 className="text-4xl md:text-5xl font-extrabold text-slate-800 dark:text-white mb-6">
+                        Review Orang Tua <span className="text-primary">Murid</span>
+                    </h2>
+                    <p className="text-xl text-slate-600 dark:text-slate-300 max-w-2xl mx-auto">
+                        Cerita dan pengalaman nyata dari para orang tua yang telah mempercayakan pendidikan ananda di TK Melati.
+                    </p>
                 </div>
 
-                {loading ? (
-                    <div className="flex justify-center items-center min-h-[300px]">
-                        <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-primary"></div>
-                    </div>
-                ) : error ? (
-                    <div className="text-center text-red-500 min-h-[300px] flex items-center justify-center">
-                        <p>{error}</p>
-                    </div>
-                ) : testimonials.length === 0 ? (
-                    <div className="text-center text-gray-500 dark:text-gray-400 min-h-[300px] flex items-center justify-center">
-                        <p>Belum ada testimonial yang tersedia.</p>
-                    </div>
-                ) : (
-                    <>
-                        <div className="relative">
-                            {/* Carousel Content */}
-                            <div className="overflow-hidden min-h-[300px] px-4 md:px-20 cursor-grab active:cursor-grabbing">
-                                <AnimatePresence mode='wait'>
-                                    <motion.div
-                                        key={currentIndex}
-                                        initial={{ opacity: 0, x: 50 }}
-                                        animate={{ opacity: 1, x: 0 }}
-                                        exit={{ opacity: 0, x: -50 }}
-                                        transition={{ duration: 0.3 }}
-                                        drag="x"
-                                        dragConstraints={{ left: 0, right: 0 }}
-                                        dragElastic={0.2}
-                                        onDragEnd={(e, { offset, velocity }) => {
-                                            const swipe = offset.x;
-
-                                            if (swipe < -50) {
-                                                nextSlide();
-                                            } else if (swipe > 50) {
-                                                prevSlide();
-                                            }
-                                        }}
-                                        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-                                    >
-                                        {visibleTestimonials.map((testimonial) => (
-                                            <TestimonialCard key={testimonial.id} testimonial={testimonial} />
-                                        ))}
-                                    </motion.div>
-                                </AnimatePresence>
-                            </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    {loading ? (
+                        Array.from({ length: 6 }).map((_, i) => (
+                            <TestimonialSkeleton key={i} />
+                        ))
+                    ) : testimonials.length > 0 ? (
+                        <AnimatePresence>
+                            {testimonials.slice(0, visibleCount).map((testimonial, index) => (
+                                <TestimonialCard key={testimonial.id} testimonial={testimonial} index={index} />
+                            ))}
+                        </AnimatePresence>
+                    ) : (
+                        <div className="col-span-full text-center py-20">
+                            <p className="text-slate-500">Belum ada testimonial.</p>
                         </div>
+                    )}
+                </div>
 
-                        {/* Pagination Dots */}
-                        {totalPages > 1 && (
-                            <div className="flex justify-center mt-8 gap-2">
-                                {Array.from({ length: totalPages }).map((_, index) => (
-                                    <button
-                                        key={index}
-                                        onClick={() => goToSlide(index)}
-                                        className={`w-3 h-3 rounded-full transition-all duration-300 ${currentIndex === index ? 'bg-primary w-8' : 'bg-secondary/30 hover:bg-secondary/50'
-                                            }`}
-                                        aria-label={`Go to slide ${index + 1}`}
-                                    />
-                                ))}
-                            </div>
-                        )}
-                    </>
+                {!loading && visibleCount < testimonials.length && (
+                    <div className="text-center mt-12">
+                        <motion.button
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            onClick={loadMore}
+                            className="px-8 py-3 bg-white dark:bg-slate-800 text-primary dark:text-white font-bold rounded-full shadow-lg border border-primary/20 hover:shadow-xl transition-all"
+                        >
+                            Muat Lebih Banyak
+                        </motion.button>
+                    </div>
                 )}
             </div>
+            <style jsx>{`
+                @keyframes shimmer {
+                    0% { transform: translateX(-100%); }
+                    100% { transform: translateX(100%); }
+                }
+            `}</style>
         </section>
     );
 };
