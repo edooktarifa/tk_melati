@@ -1,7 +1,42 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Facebook, Instagram, Youtube, MapPin, Phone, Mail, Heart } from 'lucide-react';
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '../firebase';
 
 const Footer = () => {
+    const [contact, setContact] = useState({ email: 'Loading...', phoneNumber: 'Loading...' });
+
+    useEffect(() => {
+        const fetchContact = async () => {
+            try {
+                const querySnapshot = await getDocs(collection(db, "contact"));
+                if (!querySnapshot.empty) {
+                    const docData = querySnapshot.docs[0].data();
+                    setContact({
+                        email: docData.email,
+                        phoneNumber: docData.phoneNumber
+                    });
+                }
+            } catch (error) {
+                console.error("Error fetching contact: ", error);
+            }
+        };
+
+        fetchContact();
+    }, []);
+
+    const formatPhoneNumber = (phoneNumber) => {
+        if (!phoneNumber || phoneNumber === 'Loading...') return phoneNumber;
+        const cleaned = phoneNumber.replace(/\D/g, '');
+        if (cleaned.startsWith('0')) {
+            const part1 = cleaned.substring(1, 4);
+            const part2 = cleaned.substring(4, 8);
+            const part3 = cleaned.substring(8);
+            return `+62 ${part1}-${part2}-${part3}`;
+        }
+        return phoneNumber;
+    };
+
     return (
         <footer className="relative bg-white dark:bg-slate-900 border-t border-slate-100 dark:border-slate-800 pt-16 pb-8 overflow-hidden">
             {/* Decorative Background */}
@@ -51,15 +86,15 @@ const Footer = () => {
                         <ul className="space-y-4">
                             <li className="flex items-start gap-3 text-slate-600 dark:text-slate-400">
                                 <MapPin size={20} className="text-primary mt-1 shrink-0" />
-                                <span>Jl. Melati Indah No. 123, Jakarta Selatan, Indonesia</span>
+                                <span>Jl. Tanjung Duren Utara 3 No.9, RT.9/RW.3, Tj. Duren Utara, Kec. Grogol petamburan, Kota Jakarta Barat, Daerah Khusus Ibukota Jakarta 11470, Indonesia</span>
                             </li>
                             <li className="flex items-center gap-3 text-slate-600 dark:text-slate-400">
                                 <Phone size={20} className="text-primary shrink-0" />
-                                <span>+62 123 4567 890</span>
+                                <span>{formatPhoneNumber(contact.phoneNumber)}</span>
                             </li>
                             <li className="flex items-center gap-3 text-slate-600 dark:text-slate-400">
                                 <Mail size={20} className="text-primary shrink-0" />
-                                <span>info@tkmelati.sch.id</span>
+                                <span>{contact.email}</span>
                             </li>
                         </ul>
                     </div>
