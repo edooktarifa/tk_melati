@@ -56,9 +56,24 @@ const TestimonialCard = ({ testimonial, index }) => {
             </div>
 
             <div className="flex-grow mb-6 relative z-10">
-                <p className={`text-slate-600 dark:text-slate-300 text-lg leading-relaxed italic ${!isExpanded ? 'line-clamp-4' : ''}`}>
-                    "{testimonial.text}"
-                </p>
+                <motion.div
+                    initial={false}
+                    animate={{
+                        height: isExpanded ? "auto" : "7.5rem",
+                        maskImage: isExpanded
+                            ? "linear-gradient(to bottom, black 100%, black 100%)"
+                            : "linear-gradient(to bottom, black 60%, transparent 100%)",
+                        WebkitMaskImage: isExpanded
+                            ? "linear-gradient(to bottom, black 100%, black 100%)"
+                            : "linear-gradient(to bottom, black 60%, transparent 100%)"
+                    }}
+                    transition={{ duration: 0.3, ease: "easeInOut" }}
+                    className="overflow-hidden"
+                >
+                    <p className="text-slate-600 dark:text-slate-300 text-lg leading-relaxed italic">
+                        "{testimonial.text}"
+                    </p>
+                </motion.div>
                 {isLongText && (
                     <button
                         onClick={() => setIsExpanded(!isExpanded)}
