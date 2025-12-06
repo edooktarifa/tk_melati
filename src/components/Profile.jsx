@@ -196,7 +196,10 @@ const Profile = () => {
                                     </div>
                                 </div>
 
-                                <button className="px-6 py-2 rounded-full bg-slate-100 dark:bg-slate-700 text-slate-900 dark:text-white font-semibold text-sm hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors shadow-sm hover:shadow-md">
+                                <button
+                                    onClick={() => document.getElementById('teachers')?.scrollIntoView({ behavior: 'smooth' })}
+                                    className="px-6 py-2 rounded-full bg-slate-100 dark:bg-slate-700 text-slate-900 dark:text-white font-semibold text-sm hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors shadow-sm hover:shadow-md"
+                                >
                                     Lihat Semua
                                 </button>
                             </div>
