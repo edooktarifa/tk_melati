@@ -63,9 +63,9 @@ const Profile = () => {
     }, []);
 
     const stats = [
-        { icon: <Users size={20} />, label: "Murid", value: "150+" },
-        { icon: <Trophy size={20} />, label: "Prestasi", value: "25+" },
-        { icon: <Heart size={20} />, label: "Guru", value: "10+" },
+        { icon: <Users size={20} />, label: "Murid", value: "15+" },
+        { icon: <Trophy size={20} />, label: "Prestasi", value: "10+" },
+        { icon: <Heart size={20} />, label: "Guru", value: "5+" },
     ];
 
     return (

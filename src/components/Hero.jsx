@@ -189,7 +189,7 @@ const Hero = () => {
                                 </div>
                                 <div>
                                     <p className="text-xs text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider">Terakreditasi</p>
-                                    <p className="text-lg font-bold text-slate-800 dark:text-white">Nilai A</p>
+                                    <p className="text-lg font-bold text-slate-800 dark:text-white">B</p>
                                 </div>
                             </motion.div>
                         </div>
