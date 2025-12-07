@@ -1,7 +1,46 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { MapPin, Phone, Mail, Clock } from 'lucide-react';
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '../firebase';
 
 const MapSection = () => {
+    const [contact, setContact] = useState({ email: '', phoneNumber: '' });
+
+    useEffect(() => {
+        const fetchContact = async () => {
+            try {
+                const querySnapshot = await getDocs(collection(db, "contact"));
+                console.log("Contact snapshot size:", querySnapshot.size);
+                if (!querySnapshot.empty) {
+                    const docData = querySnapshot.docs[0].data();
+                    console.log("Contact data:", docData);
+                    setContact({
+                        email: docData.email,
+                        phoneNumber: docData.phoneNumber
+                    });
+                } else {
+                    console.log("No contact documents found.");
+                }
+            } catch (error) {
+                console.error("Error fetching contact: ", error);
+            }
+        };
+
+        fetchContact();
+    }, []);
+
+    const formatPhoneNumber = (phoneNumber) => {
+        if (!phoneNumber) return 'Loading...';
+        const cleaned = phoneNumber.replace(/\D/g, '');
+        if (cleaned.startsWith('0')) {
+            const part1 = cleaned.substring(1, 4);
+            const part2 = cleaned.substring(4, 8);
+            const part3 = cleaned.substring(8);
+            return `+62 ${part1}-${part2}-${part3}`;
+        }
+        return phoneNumber;
+    };
+
     return (
         <section id="map" className="py-20 bg-white dark:bg-slate-900">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -31,7 +70,17 @@ const MapSection = () => {
                                 </div>
                                 <div>
                                     <h4 className="font-bold text-text dark:text-white">Kontak</h4>
-                                    <p className="text-gray-600 dark:text-gray-300">+62 858-2000-9353</p>
+                                    <p className="text-gray-600 dark:text-gray-300">{formatPhoneNumber(contact.phoneNumber)}</p>
+                                </div>
+                            </div>
+
+                            <div className="flex items-start gap-4">
+                                <div className="bg-blue-100 dark:bg-blue-900/30 p-3 rounded-full text-blue-600 dark:text-blue-400">
+                                    <Mail size={24} />
+                                </div>
+                                <div>
+                                    <h4 className="font-bold text-text dark:text-white">Email</h4>
+                                    <p className="text-gray-600 dark:text-gray-300">{contact.email || 'Loading...'}</p>
                                 </div>
                             </div>
 

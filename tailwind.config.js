@@ -13,6 +13,8 @@ export default {
                 accent: 'var(--color-accent)',
                 background: 'var(--color-background)',
                 text: 'var(--color-text)',
+                'surface': 'var(--color-surface)',
+                'surface-highlight': 'var(--color-surface-highlight)',
             },
             borderRadius: {
                 xl: 'var(--radius-xl)',
@@ -34,10 +36,24 @@ export default {
                         transform: "translate(0px, 0px) scale(1)",
                     },
                 },
+                float: {
+                    "0%, 100%": { transform: "translateY(0)" },
+                    "50%": { transform: "translateY(-10px)" },
+                },
+                'pulse-slow': {
+                    '0%, 100%': { opacity: 1 },
+                    '50%': { opacity: .5 },
+                }
             },
             animation: {
                 blob: "blob 7s infinite",
+                float: "float 6s ease-in-out infinite",
+                'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
             },
+            fontFamily: {
+                sans: ['Nunito', 'sans-serif'],
+                bubble: ['Bubblegum Sans', 'cursive'], // Optional for playful headers if we want
+            }
         },
     },
     plugins: [],
