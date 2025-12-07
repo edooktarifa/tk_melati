@@ -2,12 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { Menu, X, Flower2, Sun, Moon } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTheme } from '../context/ThemeContext';
+import useContact from '../hooks/useContact';
 
 const Navbar = () => {
     const { theme, toggleTheme } = useTheme();
     const [isOpen, setIsOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
     const [activeLink, setActiveLink] = useState('Beranda');
+    const { getWhatsAppNumber } = useContact();
+    const whatsappNumber = getWhatsAppNumber() || '6285820009353'; // Fallback
+    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=%22Selamat%20datang%20di%20TK%20Melati%2C%20ada%20yang%20bisa%20kami%20bantu%20hari%20ini%3F%22`;
 
     useEffect(() => {
         const handleScroll = () => {
@@ -109,7 +113,7 @@ const Navbar = () => {
                             </a>
                         ))}
                         <a
-                            href="https://wa.me/6285820009353?text=%22Selamat%20datang%20di%20TK%20Melati%2C%20ada%20yang%20bisa%20kami%20bantu%20hari%20ini%3F%22"
+                            href={whatsappUrl}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="bg-accent text-white px-6 py-2.5 rounded-full font-bold text-sm shadow-md hover:bg-pink-500 hover:shadow-lg transition-all duration-200 transform hover:-translate-y-0.5"
@@ -184,7 +188,7 @@ const Navbar = () => {
                                 </a>
                             ))}
                             <a
-                                href="https://wa.me/6282386836164?text=%22Selamat%20datang%20di%20TK%20Melati%2C%20ada%20yang%20bisa%20kami%20bantu%20hari%20ini%3F%22"
+                                href={whatsappUrl}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="block w-full text-center bg-yellow-400 text-white px-6 py-3 rounded-full font-bold shadow-md hover:bg-yellow-500 transition-all"

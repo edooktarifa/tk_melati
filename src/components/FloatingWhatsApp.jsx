@@ -1,11 +1,19 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
+import useContact from '../hooks/useContact';
+
 const FloatingWhatsApp = () => {
-    // WhatsApp number - format: country code + number (without + or spaces)
-    const phoneNumber = '6285820009353'; // Replace with actual school number
+    const { getWhatsAppNumber, loading } = useContact();
+    const whatsappNumber = getWhatsAppNumber();
+
+    // Default fallback if loading or no number found (optional, keeps UI functional)
+    const finalNumber = whatsappNumber || '6285820009353';
+
     const message = 'Halo TK Melati, saya ingin bertanya tentang pendaftaran';
-    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+    const whatsappUrl = `https://wa.me/${finalNumber}?text=${encodeURIComponent(message)}`;
+
+    if (loading && !whatsappNumber) return null; // Or return a loading skeleton
 
     return (
         <motion.a

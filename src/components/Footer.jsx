@@ -1,40 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Facebook, Instagram, Youtube, MapPin, Phone, Mail, Heart } from 'lucide-react';
-import { collection, getDocs } from 'firebase/firestore';
-import { db } from '../firebase';
+import useContact from '../hooks/useContact';
 
 const Footer = () => {
-    const [contact, setContact] = useState({ email: 'Loading...', phoneNumber: 'Loading...' });
+    const { email, phoneNumber, loading } = useContact();
 
-    useEffect(() => {
-        const fetchContact = async () => {
-            try {
-                const querySnapshot = await getDocs(collection(db, "contact"));
-                if (!querySnapshot.empty) {
-                    const docData = querySnapshot.docs[0].data();
-                    setContact({
-                        email: docData.email,
-                        phoneNumber: docData.phoneNumber
-                    });
-                }
-            } catch (error) {
-                console.error("Error fetching contact: ", error);
-            }
-        };
-
-        fetchContact();
-    }, []);
-
-    const formatPhoneNumber = (phoneNumber) => {
-        if (!phoneNumber || phoneNumber === 'Loading...') return phoneNumber;
-        const cleaned = phoneNumber.replace(/\D/g, '');
+    // Format phone number for display (not for URL)
+    const formatPhoneNumber = (phone) => {
+        if (!phone) return 'Loading...';
+        const cleaned = phone.replace(/\D/g, '');
         if (cleaned.startsWith('0')) {
             const part1 = cleaned.substring(1, 4);
             const part2 = cleaned.substring(4, 8);
             const part3 = cleaned.substring(8);
             return `+62 ${part1}-${part2}-${part3}`;
         }
-        return phoneNumber;
+        return phone;
     };
 
     return (
@@ -90,11 +71,11 @@ const Footer = () => {
                             </li>
                             <li className="flex items-center gap-3 text-slate-600 dark:text-slate-400">
                                 <Phone size={20} className="text-primary shrink-0" />
-                                <span>{formatPhoneNumber(contact.phoneNumber)}</span>
+                                <span>{loading ? 'Loading...' : formatPhoneNumber(phoneNumber)}</span>
                             </li>
                             <li className="flex items-center gap-3 text-slate-600 dark:text-slate-400">
                                 <Mail size={20} className="text-primary shrink-0" />
-                                <span>{contact.email}</span>
+                                <span>{loading ? 'Loading...' : email}</span>
                             </li>
                         </ul>
                     </div>
