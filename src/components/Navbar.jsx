@@ -3,6 +3,7 @@ import { Menu, X, Flower2, Sun, Moon } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTheme } from '../context/ThemeContext';
 import useContact from '../hooks/useContact';
+import RunningText from './RunningText';
 
 const Navbar = () => {
     const { theme, toggleTheme } = useTheme();
@@ -199,6 +200,7 @@ const Navbar = () => {
                     </motion.div>
                 )}
             </AnimatePresence>
+            <RunningText />
         </nav>
     );
 };
