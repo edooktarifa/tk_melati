@@ -256,8 +256,8 @@ const Testimonials = () => {
                                     setCurrentIndex(index);
                                 }}
                                 className={`h-2 rounded-full transition-all duration-500 ease-out ${index === currentIndex
-                                        ? 'bg-primary w-12 shadow-lg shadow-primary/30'
-                                        : 'bg-slate-300 dark:bg-slate-600 w-2 hover:bg-slate-400'
+                                    ? 'bg-primary w-12 shadow-lg shadow-primary/30'
+                                    : 'bg-slate-300 dark:bg-slate-600 w-2 hover:bg-slate-400'
                                     }`}
                                 aria-label={`Go to page ${index + 1}`}
                             />
@@ -265,12 +265,7 @@ const Testimonials = () => {
                     </div>
                 )}
             </div>
-            <style jsx>{`
-                @keyframes shimmer {
-                    0% { transform: translateX(-100%); }
-                    100% { transform: translateX(100%); }
-                }
-            `}</style>
+
         </section>
     );
 };

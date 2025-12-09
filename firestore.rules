@@ -1,0 +1,48 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Helper function
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    // Public Read Access, Admin Write Access
+    // (Akses Baca Publik, Tulis hanya Admin)
+    
+    match /teachers/{document=**} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+    
+    match /testimonials/{document=**} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+    
+    match /contact/{document=**} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+    
+    match /formulir/{document=**} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+    
+    match /gallery/{document=**} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+    
+    match /articles/{document=**} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+
+    // Default: Deny everything else
+    match /{document=**} {
+      allow read, write: if isAuthenticated();
+    }
+  }
+}
